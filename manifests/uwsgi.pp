@@ -1,5 +1,11 @@
 class jo::uwsgi ($apps) {
 
+  file { '/etc/init/uwsgi.conf':
+    ensure => present,
+    source => 'puppet:///modules/jo/upstart_uwsgi.conf',
+    before => Service['uwsgi'],
+  }
+
   service { 'uwsgi':
     enable     => true,
     ensure     => running,
