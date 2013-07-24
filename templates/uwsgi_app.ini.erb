@@ -1,0 +1,15 @@
+[uwsgi]
+# Variables
+base = /var/www/%n
+master = true
+module = app
+callable = app
+# Generic Config
+uid = www-data
+gid = www-data
+home = %(base)/venv
+pythonpath = %(base)
+socket = 127.0.0.1:<%= @port %>
+logto = /var/log/uwsgi/%n.log
+pidfile = /tmp/uwsgi-%n.pid
+touch-reload = /var/www/%n/UWSGI_RELOAD
