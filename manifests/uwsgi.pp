@@ -13,12 +13,20 @@ class jo::uwsgi ($apps) {
     hasstatus  => true,
   }
 
+  file { ['/etc/uwsgi',
+          '/etc/uwsgi/apps-enabled',
+          '/etc/uwsgi/apps-available']:
+    ensure => directory,
+    replace => false,
+  }
+
   # to mimic a for loop, we'll have $apps be a hash
   # We'll create a uwsgi_app resource for each key in $apps
   # Inside the resource we'll access the external $apps hash
   # to get the port which is needed in the template
 
-  define uwsgi_app ($app) {
+  define uwsgi_app ($apps) {
+    $app = $title
     $port = $apps[$app]
 
     file { "/etc/uwsgi/apps-available/$app.ini":
@@ -28,11 +36,15 @@ class jo::uwsgi ($apps) {
     file { "/etc/uwsgi/apps-enabled/$app.ini":
       ensure  => link,
       target  => "/etc/uwsgi/apps-available/$app.ini",
-      require => File["/etc/uwsgi/apps-available/$app.ini",
+      require => File["/etc/uwsgi/apps-available/$app.ini"],
     }
   }
 
-  uwsgi_app { keys($apps):
-    notify => Service ['uwsgi'],
+  $apps_keys = keys($apps)
+
+  uwsgi_app { $apps_keys:
+    apps    => $apps,
+    notify  => Service['uwsgi'],
+    require => File['/etc/uwsgi/apps-enabled', '/etc/uwsgi/apps-available'],
   }
 }

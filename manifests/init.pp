@@ -6,8 +6,8 @@ class jo ($apps) {
     require => Package['nginx'],
   }
 
-  class { 'jo::uwsigi':
+  class { 'jo::uwsgi':
     apps => $apps,
-    require => Package['nginx'],
+    require => Package['uwsgi'],
   }
 }
