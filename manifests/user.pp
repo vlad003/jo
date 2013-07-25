@@ -1,22 +1,41 @@
 class jo::user {
+  group { 'ubuntu':
+    ensure => present,
+  }
+
   user { 'ubuntu':
     name       => 'ubuntu',
     ensure     => present,
     home       => '/home/ubuntu',
     managehome => true,
     shell      => '/bin/bash',
+    require    => Group['ubuntu'],
   }
 
-  $ssh_key => 'puppet:///modules/jo/id_rsa.pub'
+  file { '/home/ubuntu':
+    ensure  => directory,
+    replace => false,
+    owner   => 'ubuntu',
+    group   => 'ubuntu',
+    require => User['ubuntu'],
+  }
+
+  file { '/home/ubuntu/.ssh':
+    ensure  => directory,
+    replace => false,
+    owner   => 'ubuntu',
+    group   => 'ubuntu',
+    mode    => '0700',
+    require => File['/home/ubuntu'],
+  }
+
+  $ssh_key_split = extract_ssh_key('/etc/puppet/modules/jo/files/ubuntu.pub')
 
   ssh_authorized_key { 'ubuntu_pub':
     ensure => present,
-    type   => extract_ssh_key($ssh_key)[0],
-    key    => extract_ssh_key($ssh_key)[1],
-    name   => extract_ssh_key($ssh_key)[2],
+    type   => $ssh_key_split[0],
+    key    => $ssh_key_split[1],
+    name   => $ssh_key_split[2],
     user   => 'ubuntu',
   }
 }
-
-
-
