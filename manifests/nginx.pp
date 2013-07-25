@@ -1,4 +1,4 @@
-class jo::webserver ($apps) {
+class jo::nginx ($apps) {
 
   service { 'nginx':
     enable     => true,
