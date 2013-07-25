@@ -15,9 +15,11 @@ class jo::uwsgi ($apps) {
 
   file { ['/etc/uwsgi',
           '/etc/uwsgi/apps-enabled',
-          '/etc/uwsgi/apps-available']:
-    ensure => directory,
+          '/etc/uwsgi/apps-available',
+          '/var/log/uwsgi']:
+    ensure  => directory,
     replace => false,
+    notify  => Service['uwsgi'],
   }
 
   # to mimic a for loop, we'll have $apps be a hash
