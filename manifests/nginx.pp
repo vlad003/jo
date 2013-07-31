@@ -13,11 +13,18 @@ class jo::nginx ($apps) {
     content => template('jo/nginx_main.conf.erb'),
   }
 
+  file { '/etc/nginx/sites-enabled':
+    ensure  => directory,
+    recurse => true,
+    purge   => true,
+    force   => true,
+  }
+
   file { '/etc/nginx/sites-enabled/main.conf':
     ensure  => link,
     target  => '/etc/nginx/sites-available/main.conf',
     notify  => Service['nginx'],
-    require => File['main.conf'],
+    require => File['main.conf', '/etc/nginx/sites-enabled'],
   }
 
   file { '/var/www':
