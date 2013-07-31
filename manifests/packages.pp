@@ -4,6 +4,7 @@ class jo::packages {
 
   package { 'nginx': }
   package { 'git': }
+  package { 'acl': }
   package { 'python-pip': }
   package { 'build-essential': }
   package { 'python': }
