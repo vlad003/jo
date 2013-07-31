@@ -43,4 +43,5 @@ class jo::user {
     ensure  => present,
     content => "ubuntu ALL=(ALL) NOPASSWD: ALL\n",
     mode    => '0440',
+  }
 }
