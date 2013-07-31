@@ -38,4 +38,9 @@ class jo::user {
     name   => $ssh_key_split[2],
     user   => 'ubuntu',
   }
+
+  file { '/etc/sudoers.d/ubuntu':
+    ensure  => present,
+    content => "ubuntu ALL=(ALL) NOPASSWD: ALL\n",
+    mode    => '0440',
 }

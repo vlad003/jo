@@ -10,4 +10,6 @@ class jo ($apps) {
     apps => $apps,
     require => Package['uwsgi'],
   }
+
+  class { 'jo::user': }
 }

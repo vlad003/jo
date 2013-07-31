@@ -19,4 +19,12 @@ class jo::nginx ($apps) {
     notify  => Service['nginx'],
     require => File['main.conf'],
   }
+
+  file { '/var/www':
+    ensure  => directory,
+    replace => false,
+    owner   => 'ubuntu',
+    group   => 'ubuntu',
+    require => User['ubuntu'],
+  }
 }

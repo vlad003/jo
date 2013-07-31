@@ -2,7 +2,8 @@ class jo::packages {
 
   Package { ensure => installed, }
 
-  package { 'nginx' : }
+  package { 'nginx': }
+  package { 'git': }
   package { 'python-pip': }
   package { 'build-essential': }
   package { 'python': }
